@@ -108,4 +108,15 @@ class BookDatabase:
                 key_signature TEXT    
                 )
             """)
-
+    
+    def insert_bulk(self,tunes):
+        temp = []
+        for tune in tunes:
+            temp.append((tune.reference_no,tune.book_no,tune.title,tune.length,tune.rhythm,tune.key))
+            
+        self.cursor.executemany("""
+            INSERT INTO tunes (reference_no, book_no, title, length, rhythm, key)
+            VALUES (?,?,?,?,?,?)
+        """,temp)
+      
+        
