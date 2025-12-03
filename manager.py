@@ -1,10 +1,10 @@
 import glob
 import pathlib
-import re
+import re #to do regex
 import sqlite3
 import parser 
 from dataclasses import dataclass
-
+import pandas as pd
 
 @dataclass 
 class BookMetadata:
@@ -118,4 +118,6 @@ class BookDatabase:
             VALUES (?,?,?,?,?,?)
         """,temp)
       
+    def get_all_tunes(self):
         
+        return 

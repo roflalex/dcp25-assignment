@@ -7,4 +7,5 @@ def main():
     tunes = bm.parse(books)
     bdb.setup()
     bdb.insert_bulk(tunes)
+    print("successfully made database")
 main()
