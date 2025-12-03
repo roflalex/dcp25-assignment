@@ -28,3 +28,15 @@ class Tune:
     #K 
     key:str
     
+class BookManager:
+    pattern: str
+    base: str
+
+    def __init__(self,base:str):
+        self.base = base
+        self.pattern = str(pathlib.Path(base) / "*/*.abc")
+    
+    def _load_possible_tunes(self)->list[str]:
+        return glob.glob(self.pattern)
+    
+    
