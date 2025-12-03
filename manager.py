@@ -104,7 +104,7 @@ class BookDatabase:
                 title TEXT,
                 length TEXT,
                 rhythm TEXT,
-                key_signature TEXT    
+                key TEXT    
                 )
             """)
     
