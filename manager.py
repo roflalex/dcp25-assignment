@@ -95,3 +95,17 @@ class BookDatabase:
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
 
+    def setup(self):
+
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tunes (
+                tune_id INTEGER PRIMARY KEY,
+                reference_no INTEGER,
+                book_no INTEGER,
+                title TEXT,
+                length TEXT,
+                rhythm TEXT,
+                key_signature TEXT    
+                )
+            """)
+
