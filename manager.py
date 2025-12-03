@@ -21,8 +21,6 @@ class Tune:
     reference_number: int
     #T 
     title: str
-    #M 
-    meter: str
     #L
     length: str
     #R 
