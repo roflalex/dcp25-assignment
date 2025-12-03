@@ -3,7 +3,6 @@ import pathlib
 import re
 import sqlite3
 import parser 
-import logging
 from dataclasses import dataclass
 
 logger = logging.getLogger('books')
@@ -61,3 +60,9 @@ class BookManager:
         paths = [re.match(pattern,str(p)) for p in paths]
         # construct capturing groups 
         return [BookMetadata(p[0], p[1], p[2], p[3]) for p in paths if p is not None]        
+    
+
+    def parse(self, books: list[BookMetadata]) -> list[Tune]:
+
+        data = [{ 'book': book, 'parser': parser.ABCParser(book.path)} for book in books]
+
