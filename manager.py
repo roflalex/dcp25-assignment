@@ -61,8 +61,37 @@ class BookManager:
         # construct capturing groups 
         return [BookMetadata(p[0], p[1], p[2], p[3]) for p in paths if p is not None]        
     
-
+    #type hint to help me remember what im putting in adn returning from the method
     def parse(self, books: list[BookMetadata]) -> list[Tune]:
 
-        data = [{ 'book': book, 'parser': parser.ABCParser(book.path)} for book in books]
+        #put regex path into parser
+        data = []
+        for book in books:
+            data.append({'book':book,'parser': parser.ABCParser(book.path)})    
+
+        tunes = []    
+        for x in data:
+            book = x['book']
+            meta = x['parser'].metadata
+            reference = int(meta['reference'])
+
+            tunes.append(Tune(
+                reference,
+                meta['title'],
+                meta.get('default_length',"1/8"),
+                meta.get('rhythm',"reel"),
+                meta.get('key',"Ador")
+            ))
+        return tunes
+
+class BookDatabase:
+    
+    dbname: str
+    conn: sqlite3.Connection
+    cursor: sqlite3.Cursor
+
+    def __init__(self,db_name):
+        self.dbname = db_name
+        self.conn = sqlite3.connect(db_name)
+        self.cursor = self.conn.cursor()
 
