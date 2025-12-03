@@ -5,7 +5,6 @@ import sqlite3
 import parser 
 from dataclasses import dataclass
 
-logger = logging.getLogger('books')
 
 @dataclass 
 class BookMetadata:
@@ -113,7 +112,7 @@ class BookDatabase:
         temp = []
         for tune in tunes:
             temp.append((tune.reference_no,tune.book_no,tune.title,tune.length,tune.rhythm,tune.key))
-            
+
         self.cursor.executemany("""
             INSERT INTO tunes (reference_no, book_no, title, length, rhythm, key)
             VALUES (?,?,?,?,?,?)
