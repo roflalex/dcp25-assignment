@@ -16,7 +16,7 @@ class BookMetadata:
 @dataclass
 class Tune:
     #X:
-    reference_no: int
+    reference: int
     #T 
     title: str
     #R 
@@ -74,9 +74,10 @@ class BookManager:
             tunes.append(Tune(
                 reference,
                 meta['title'],
-                meta.get('key',"Ador"),
-                book.index
-            ))
+                rhythm=meta.get('rhythm', 'Unknown'),  
+                key=meta.get('key', 'Ador'),           
+                book_no=int(book.index)                
+        ))
         return tunes
 
 class BookDatabase:
@@ -95,7 +96,7 @@ class BookDatabase:
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS tunes (
                 tune_id INTEGER PRIMARY KEY,
-                reference_no INTEGER,
+                reference INTEGER,
                 book_no INTEGER,
                 title TEXT,
                 rhythm TEXT,
@@ -106,11 +107,11 @@ class BookDatabase:
     def insert_bulk(self,tunes):
         temp = []
         for tune in tunes:
-            temp.append((tune.reference_no,tune.book_no,tune.title,tune.rhythm,tune.key))
+            temp.append((tune.reference,tune.book_no,tune.title,tune.rhythm,tune.key))
 
         self.cursor.executemany("""
-            INSERT INTO tunes (reference_no, book_no, title, rhythm, key)
-            VALUES (?,?,?,?,?,?,?)
+            INSERT INTO tunes (reference, book_no, title, rhythm, key)
+            VALUES (?,?,?,?,?)
         """,temp)
         
     def get_all_tunes(self):
