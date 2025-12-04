@@ -139,6 +139,16 @@ class BookDatabase:
         filter = df[temp]
         return filter    
 
-        
+    def most_common_keys(self, n=10):
+        df = self.get_all_tunes()
+        filter = df['key'].value_counts().head(n)
+        return filter
+    
+    def title_length_stats(self):
+        df = self.get_all_tunes()
+        df['title_length'] = df['title'].str.len()
+        return df['title_length'].describe()
+
+
 
         

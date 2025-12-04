@@ -8,4 +8,6 @@ def main():
     bdb.setup()
     bdb.insert_bulk(tunes)
     bdb.get_all_tunes()
+    bdb.most_common_keys()
+    bdb.title_length_stats()
 main()
