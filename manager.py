@@ -16,15 +16,19 @@ class BookMetadata:
 @dataclass
 class Tune:
     #X:
-    reference_number: int
+    reference_no: int
     #T 
     title: str
+    #M 
+    meter: str
     #L
     length: str
     #R 
     rhythm: str
     #K 
     key:str
+    
+    book_no: int
     
 class BookManager:
     pattern: str
@@ -73,13 +77,14 @@ class BookManager:
             book = x['book']
             meta = x['parser'].metadata
             reference = int(meta['reference'])
-
             tunes.append(Tune(
                 reference,
                 meta['title'],
+                meta['meter'],
                 meta.get('default_length',"1/8"),
                 meta.get('rhythm',"reel"),
-                meta.get('key',"Ador")
+                meta.get('key',"Ador"),
+                book.index
             ))
         return tunes
 
@@ -102,6 +107,7 @@ class BookDatabase:
                 reference_no INTEGER,
                 book_no INTEGER,
                 title TEXT,
+                meter TEXT,
                 length TEXT,
                 rhythm TEXT,
                 key TEXT    
@@ -111,13 +117,20 @@ class BookDatabase:
     def insert_bulk(self,tunes):
         temp = []
         for tune in tunes:
-            temp.append((tune.reference_no,tune.book_no,tune.title,tune.length,tune.rhythm,tune.key))
+            temp.append((tune.reference_no,tune.book_no,tune.title,tune.meter,tune.length,tune.rhythm,tune.key))
 
         self.cursor.executemany("""
-            INSERT INTO tunes (reference_no, book_no, title, length, rhythm, key)
-            VALUES (?,?,?,?,?,?)
+            INSERT INTO tunes (reference_no, book_no, title, meter, length, rhythm, key)
+            VALUES (?,?,?,?,?,?,?)
         """,temp)
-      
-    def get_all_tunes(self):
         
-        return 
+    def get_all_tunes(self):
+        query = "SELECT * FROM tunes"
+        df = pd.read_sql(query, self.conn)
+        print(df.head())
+        return df
+    
+
+        
+
+        

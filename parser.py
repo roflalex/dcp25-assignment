@@ -15,7 +15,6 @@ class ABCParser:
         with open(self.filename, "r") as file:
             for line in file:
                 line = line.strip()
-                
                 if not line:
                     continue
                 
