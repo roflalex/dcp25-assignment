@@ -138,7 +138,10 @@ class BookDatabase:
         temp = (df['title']).str.contains(search, case=False)
         filter = df[temp]
         return filter    
-
+    def get_tune_by_reference(self, reference):
+        df = self.get_all_tunes()
+        filter = df[df['reference'] == reference]
+        return filter
     def most_common_keys(self, n=10):
         df = self.get_all_tunes()
         filter = df['key'].value_counts().head(n)

@@ -2,16 +2,17 @@
 
 - [Assignment Brief](assignment.md)
 
-Name:
+Name: Alex Rolff
 
-Student Number: 
+Student Number: C24319666
 
 # Screenshots
-
+gui for the user to access the data
+![alt text](image.png)
 # Description of the project
-
+parsing through different abc files to extract data from it and then inserting into a sql database which is then accessed via a jupyter notebook which allows the user to go through the data 
 # Instructions for use
-
+open abc_gui.ipynb and run all the code blocks and enter data
 # How it works:
 
 # List of files in the project
@@ -19,16 +20,17 @@ Student Number:
 | Files | Source |
 |-----------|-----------|
 | main.py | Self written |
-| test.py | Modified from [reference]() |
-| test.py | From [reference]() |
+| parser.py | from bryan duggan lab4 analysing_abc.md  |
+| manager.py | Self written |
 
 # References
-* Item 1
-* Item 2
+* regex [https://medium.com/@MynaviTechTusVietnam/regex-for-dummies-part-4-capturing-groups-and-backreferences-50c338a3b6f6] 
+* OOP[https://www.w3schools.com/python/python_oop.asp] 
 
 # What I am most proud of in the assignment
 
-Bla bla bla
+Successfully using OOP and using regex to efficiently work through the pathing. It was pretty cool to actually use methods as well for the first time efficiently in python and before this I had never done SQL in python. It was fulfilling to see SQL connect to python and how I can use it in for my own projects.
+Im also proud of using jupyter notebook because i think it was somewhat intuitive and is easy for the user to use and creative. I dont think many others would have done it or thought about doing it so i think it created an interesting approach
 
 # What I learned
 
