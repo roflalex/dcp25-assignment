@@ -7,37 +7,50 @@ class ABCParser:
         self.music_lines = []
         self.notes = []
         self.parse_file()
-    
+
     def parse_file(self):
-        """Parse the ABC file into metadata and music."""
         in_header = True
-        
+
+        # Initialize fields
+        self.metadata = {
+            "song_no": None,
+            "title": None,
+            "alt_titles": [],
+            "rhythm": None,
+            "key": None
+        }
+
         with open(self.filename, "r") as file:
             for line in file:
                 line = line.strip()
                 if not line:
                     continue
-                
-                if in_header and ':' in line and line[0].isalpha() and line[1] == ':':
+
+                # Only detect header fields before K:
+                if in_header and ":" in line and line[1] == ":":
                     field = line[0]
                     value = line[2:].strip()
-                    
-                    field_names = {
-                        'X': 'reference',
-                        'T': 'title',
-                        'M': 'meter',
-                        'L': 'default_length',
-                        'R': 'rhythm',
-                        'K': 'key'
-                    }
-                    
-                    if field in field_names:
-                        self.metadata[field_names[field]] = value
-                    
-                    if field == 'K':
+
+                    if field == "X":
+                        self.metadata["song_no"] = int(value)
+
+                    elif field == "T":
+                        if self.metadata["title"] is None:
+                            self.metadata["title"] = value
+                        else:
+                            self.metadata["alt_titles"].append(value)
+
+                    elif field == "R":
+                        self.metadata["rhythm"] = value
+
+                    elif field == "K":
+                        self.metadata["key"] = value
                         in_header = False
+
                 else:
+                    # After K: → music begins
                     self.music_lines.append(line)
+
         
         self.extract_notes()
     

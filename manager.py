@@ -15,21 +15,20 @@ class BookMetadata:
 
 @dataclass
 class Tune:
-    #X:
-    reference_no: int
-    #T 
+    song_no: int
+    #x:
     title: str
-    #M 
-    meter: str
-    #L
-    length: str
-    #R 
+    alt_titles: list
+    #r
     rhythm: str
-    #K 
-    key:str
-    
+    #k
+    key: str
     book_no: int
+
     
+    #no meter
+    #reference number becomes song number
+    #book number is count of files, multiple songs in each 
 class BookManager:
     pattern: str
     base: str
@@ -76,12 +75,11 @@ class BookManager:
         for x in data:
             book = x['book']
             meta = x['parser'].metadata
-            reference = int(meta['reference'])
+            song_no = int(meta['song_no'])
+            
             tunes.append(Tune(
-                reference,
+                song_no,
                 meta['title'],
-                meta['meter'],
-                meta.get('default_length',"1/8"),
                 meta.get('rhythm',"reel"),
                 meta.get('key',"Ador"),
                 book.index
@@ -123,14 +121,33 @@ class BookDatabase:
             INSERT INTO tunes (reference_no, book_no, title, meter, length, rhythm, key)
             VALUES (?,?,?,?,?,?,?)
         """,temp)
-        
+
     def get_all_tunes(self):
         query = "SELECT * FROM tunes"
         df = pd.read_sql(query, self.conn)
-        print(df.head())
+        #print(df.head())
+        print("Successfully created database!")
         return df
     
+    def get_tunes_by_rhythm(self, rhythm):
+        """Get all tunes from a specific book"""
+        df = self.get_all_tunes()
+        filter = df[df['rhythm'] == rhythm]
+        return filter
+        
 
+    def get_tunes_by_book(self, book_number):
+        """Get all tunes from a specific book"""
+        df = self.get_all_tunes()
+        filter = df[df['book_no'] == book_number]
+        return filter
+
+    def search_tunes(self, search):
+        """Search tunes by title"""
+        df = self.get_all_tunes()
+        temp = (df['title']).str.contains(search, case=False)
+        filter = df[temp]
+        return filter
         
 
         
