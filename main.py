@@ -1,6 +1,6 @@
 import manager
 
-def db():
+def main():
     bm = manager.BookManager('abc_books')
     bdb = manager.BookDatabase('books.db')
     books = bm.search()
@@ -8,4 +8,4 @@ def db():
     bdb.setup()
     bdb.insert_bulk(tunes)
     bdb.get_all_tunes()
-db()
+main()

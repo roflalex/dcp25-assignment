@@ -15,20 +15,15 @@ class BookMetadata:
 
 @dataclass
 class Tune:
-    song_no: int
-    #x:
+    #X:
+    reference_no: int
+    #T 
     title: str
-    alt_titles: list
-    #r
+    #R 
     rhythm: str
-    #k
-    key: str
+    #K 
+    key:str
     book_no: int
-
-    
-    #no meter
-    #reference number becomes song number
-    #book number is count of files, multiple songs in each 
 class BookManager:
     pattern: str
     base: str
@@ -75,12 +70,10 @@ class BookManager:
         for x in data:
             book = x['book']
             meta = x['parser'].metadata
-            song_no = int(meta['song_no'])
-            
+            reference = int(meta['reference'])
             tunes.append(Tune(
-                song_no,
+                reference,
                 meta['title'],
-                meta.get('rhythm',"reel"),
                 meta.get('key',"Ador"),
                 book.index
             ))
@@ -105,8 +98,6 @@ class BookDatabase:
                 reference_no INTEGER,
                 book_no INTEGER,
                 title TEXT,
-                meter TEXT,
-                length TEXT,
                 rhythm TEXT,
                 key TEXT    
                 )
@@ -115,18 +106,17 @@ class BookDatabase:
     def insert_bulk(self,tunes):
         temp = []
         for tune in tunes:
-            temp.append((tune.reference_no,tune.book_no,tune.title,tune.meter,tune.length,tune.rhythm,tune.key))
+            temp.append((tune.reference_no,tune.book_no,tune.title,tune.rhythm,tune.key))
 
         self.cursor.executemany("""
-            INSERT INTO tunes (reference_no, book_no, title, meter, length, rhythm, key)
+            INSERT INTO tunes (reference_no, book_no, title, rhythm, key)
             VALUES (?,?,?,?,?,?,?)
         """,temp)
-
+        
     def get_all_tunes(self):
         query = "SELECT * FROM tunes"
         df = pd.read_sql(query, self.conn)
-        #print(df.head())
-        print("Successfully created database!")
+        print(df.head())
         return df
     
     def get_tunes_by_rhythm(self, rhythm):
@@ -134,7 +124,6 @@ class BookDatabase:
         df = self.get_all_tunes()
         filter = df[df['rhythm'] == rhythm]
         return filter
-        
 
     def get_tunes_by_book(self, book_number):
         """Get all tunes from a specific book"""
@@ -147,7 +136,8 @@ class BookDatabase:
         df = self.get_all_tunes()
         temp = (df['title']).str.contains(search, case=False)
         filter = df[temp]
-        return filter
+        return filter    
+
         
 
         
