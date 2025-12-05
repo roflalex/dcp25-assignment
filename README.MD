@@ -14,6 +14,17 @@ parsing through different abc files to extract data from it and then inserting i
 # Instructions for use
 open abc_gui.ipynb and run all the code blocks and enter data
 # How it works:
+`manager.py` contains two classes for managing the parsing of abc files, and storing the data.
+
+The `BookManager` class obtains a list of possible files using glob, this simplifies the logic of searching for files, and makes it more extensible for future use, for example if the parsing was to become more relaxed or stricter.
+
+It uses regex to refine this list, this isn't an ideal solution as paths are complex strings, but it provides a good trade off between flexibility (it's easy to encode the rules withinm a regex) and correctness.
+
+This class then uses the `ABCParser` to transform the data into sensible normalized classes.
+
+The `BookDatabase` is thin layer abstracting certain database operations into just operations on `Tune` objects, this abstraction simplifies the interaction with the database. `BookDatabase` is populated with analytical methods which are called in the `abc_gui.ipynb`
+`abc_gui.ipynb` creates the database for the user and allows them to run commands to query and interact with the data with ease. 
+
 
 # List of files in the project
 
@@ -34,75 +45,4 @@ Im also proud of using jupyter notebook because i think it was somewhat intuitiv
 
 # What I learned
 
-Bla bla bla
-
-## Below is how to use Markdown. You can delete this:
-
-## This is how to markdown text:
-
-This is *emphasis*
-
-This is a bulleted list
-
-- Item
-- Item
-
-This is a numbered list
-
-1. Item
-1. Item
-
-This is a [hyperlink](http://bryanduggan.org)
-
-# Headings
-## Headings
-#### Headings
-##### Headings
-
-This is code:
-
-```Java
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-So is this without specifying the language:
-
-```
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-This is an image using a relative URL:
-
-![An image](images/p8.png)
-
-This is an image using an absolute URL:
-
-![A different image](https://bryanduggandotorg.files.wordpress.com/2019/02/infinite-forms-00045.png?w=595&h=&zoom=2)
-
-This is a youtube video:
-
-[![YouTube](http://img.youtube.com/vi/J2kHSSFA4NU/0.jpg)](https://www.youtube.com/watch?v=J2kHSSFA4NU)
-
-This is a table:
-
-| Heading 1 | Heading 2 |
-|-----------|-----------|
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-
-|Some stuff | Some more stuff in this column |
+I learned how to use parts of OOP and primarily classes and dataclasses. I learned about the life cycle of analyzing a program and how I can do this in my own time

@@ -6,6 +6,7 @@ import parser
 from dataclasses import dataclass
 import pandas as pd
 
+# decorator wraps the class
 @dataclass 
 class BookMetadata:
     path: str
@@ -30,6 +31,7 @@ class BookManager:
 
     def __init__(self,base:str):
         self.base = base
+        #converts base into path object and makes it work with different os
         self.pattern = str(pathlib.Path(base) / "*/*.abc")
     
     def _load_possible_tunes(self)->list[str]:
@@ -37,6 +39,7 @@ class BookManager:
     #find all possible tunes in the directory
     def search(self)-> list[BookMetadata]:
         paths = self._load_possible_tunes()
+        #takes strings from glob.glob and converts them into Path objects
         paths = [pathlib.Path(p) for p in paths]
         #^ = start regex
         #() = capture regex
@@ -52,13 +55,13 @@ class BookManager:
         # finally look for file name ending in .abc
         
         pattern = r"^(.*)(?:/|\\)([0-9]+)(?:/|\\)(.*)\.abc$"
+        # checks if its real file with is_file() function
         paths = [p for p in paths if p.is_file()]
         #matches pattern to the path
         paths = [re.match(pattern,str(p)) for p in paths]
         # construct capturing groups 
         return [BookMetadata(p[0], p[1], p[2], p[3]) for p in paths if p is not None]        
     
-    #type hint to help me remember what im putting in adn returning from the method
     def parse(self, books: list[BookMetadata]) -> list[Tune]:
 
         #put regex path into parser
